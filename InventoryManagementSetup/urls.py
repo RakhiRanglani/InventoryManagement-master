@@ -15,7 +15,12 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from InventoryManagementApp import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('', views.index, name='homepage'),
+    path('homepage.html', views.index, name='homepage'),
+    path('stats.html', views.statistic, name='statistic'),
+
 ]
