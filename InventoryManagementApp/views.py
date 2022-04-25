@@ -9,8 +9,11 @@ import datetime
 import numpy as np
 import csv
 import pandas as pd
-from InventoryManagementApp.models import Food
+from .models import Food
+from django.contrib import messages
+from django.shortcuts import render, redirect
 import seaborn as sns
+from django.contrib.auth.models import User, auth
 
 sns.set()  # matplotlib style
 
@@ -66,7 +69,7 @@ def predict_date(date, model, period):
 
 # Create your views here.
 @csrf_exempt
-def index(request):
+def homepage(request):
     food_pickup_info = ''
     if (request.method == 'POST'):
         # if the button clicked on was food x, delete it and record info for user
@@ -116,7 +119,7 @@ def save_ordered():
     plt.xlabel('Dates')
     plt.ylabel('Apples ordered')
     plt.title('Apples ordered across time')
-    plt.savefig('ooglorp/static/images/ordered.jpg')
+    plt.savefig('InventoryManagementApp/static/images/ordered.jpg')
 
 
 # the csrf cookie crashes any posting of content to server so disable
@@ -137,6 +140,85 @@ def upload(request):
 @csrf_exempt
 def feed(request):
     return render(request, 'feed.html', {'feed_image': 'output.jpg'})
+
+
+@csrf_exempt
+def index(request):
+    return render(request, 'index.html')
+
+
+@csrf_exempt
+def about(request):
+    return render(request, 'about.html')
+
+
+@csrf_exempt
+def blog(request):
+    return render(request, 'blog.html')
+
+
+@csrf_exempt
+def testimonial(request):
+    return render(request, 'testimonial.html')
+
+
+@csrf_exempt
+def register(request):
+    if request.method == 'POST':
+        first_name = request.POST['first_name']
+        last_name = request.POST['last_name']
+        username = request.POST['username']
+        email = request.POST['email']
+        password = request.POST['password']
+        confirm_password = request.POST['confirm_password']
+
+        if password == confirm_password:
+            if User.objects.filter(username=username).exists():
+                messages.info(request, 'Username is already taken')
+                return redirect(register)
+            elif User.objects.filter(email=email).exists():
+                messages.info(request, 'Email is already taken')
+                return redirect(register)
+            else:
+                user = User.objects.create_user(username=username, password=password,
+                                                email=email, first_name=first_name, last_name=last_name)
+                user.save()
+
+                return redirect('login')
+
+
+        else:
+            messages.info(request, 'Both passwords are not matching')
+            return redirect(register)
+
+
+    else:
+        return render(request, 'register.html')
+
+@csrf_exempt
+def logout(request):
+    auth.logout(request)
+    return redirect('index')
+
+
+@csrf_exempt
+def login(request):
+    if request.method == 'POST':
+        username = request.POST['username']
+        password = request.POST['password']
+        user = auth.authenticate(username=username, password=password)
+
+        if user is not None:
+            auth.login(request, user)
+            return redirect('index.html')
+        else:
+            messages.info(request, 'Invalid Username or Password')
+            return redirect('login.html')
+
+
+
+    else:
+        return render(request, 'login.html')
 
 
 # the csrf cookie crashes any posting of content to server so disable
