@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 {% load static %}
+
 <html>
 
 <head>
@@ -13,7 +14,7 @@
   <meta name="description" content="" />
   <meta name="author" content="" />
 
-  <title>Delfood</title>
+  <title>Food Saviour</title>
 
 
   <!-- bootstrap core css -->
@@ -34,7 +35,8 @@
 
 
   <!-- Custom styles for this template -->
-  	<link href="{% static 'css/style.css' %}" rel="stylesheet">
+
+  	<link href="{% static '/css/style.css' %}" rel="stylesheet">
 
   <!-- responsive style -->
     <link href="{% static 'css/responsive.css' %}" rel="stylesheet">
@@ -56,10 +58,16 @@
           </a>
           <div class="" id="">
             <div class="User_option">
-              <a href="login.html">
-                <i class="fa fa-user" aria-hidden="true"></i>
-                <span>Login</span>
-              </a>
+              <span class="display-8">Welcome, {{user.first_name.title|default:'Guest'}}</span>
+              {% if user.is_authenticated %}
+                <a class="btn btn-primary btn-lg" href="{% url 'users-profile' %}" class="nav-item nav-link">Profile</a>
+
+                <a class="btn btn-primary btn-lg" href="{% url 'logout' %}" role="button">Logout</a>
+            {% else %}
+                <a class="btn btn-primary btn-lg" href="{% url 'login' %}" role="button">LogIn</a>
+                <a class="btn btn-primary btn-lg" href="{% url 'register' %}" role="button">Registration</a>
+
+            {% endif %}
               <form class="form-inline ">
                 <input type="search" placeholder="Search" />
                 <button class="btn  nav_search-btn" type="submit">
@@ -76,9 +84,9 @@
             <div id="myNav" class="overlay">
               <div class="overlay-content">
                 <a href="index.html">Home</a>
-                <a href="about.html">About</a>
-                <a href="blog.html">Blog</a>
-                <a href="testimonial.html">Testimonial</a>
+                <a href="statistic.html">Food Stats</a>
+                <a href="upload.html">Donate Food</a>
+                <a href="feed.html">Snapshot of Weekly Inventory</a>
               </div>
             </div>
           </div>
@@ -94,13 +102,12 @@
           <div class="col-lg-10 mx-auto">
             <div class="detail-box">
               <h1>
-                Discover Restuarant And Food
+               Predict your inventory before it is getting too Late
               </h1>
-              <p>
-                when looking at its layout. The point of using Lorem Ipsum
-              </p>
+              <p>It is estimated that food waste generates about 8% to 10% of global greenhouse gas emissions.
+                 Reducing food waste is therefore an effective climate action.</p>
             </div>
-            <div class="find_container ">
+         <!--   <div class="find_container ">
               <div class="container">
                 <div class="row">
                   <div class="col">
@@ -128,7 +135,7 @@
             </div>
           </div>
         </div>
-      </div>
+      </div>-->
       <div class="slider_container">
         <div class="item">
           <div class="img-box">
@@ -172,6 +179,7 @@
           </div>
         </div>
       </div>
+          </div></div></div>
     </section>
     <!-- end slider section -->
   </div>
@@ -179,66 +187,44 @@
 
   <!-- recipe section -->
 
-  <section class="recipe_section layout_padding-top">
+  <section class="recipe_section ">
     <div class="container">
       <div class="heading_container heading_center">
-        <h2>
-          Our Best Popular Recipes
-        </h2>
+        <h2> Excess Food Availability</h2>
       </div>
       <div class="row">
-        <div class="col-sm-6 col-md-4 mx-auto">
-          <div class="box">
-            <div class="img-box">
-              <img src="images/r1.jpg" class="box-img" alt="">
-            </div>
-            <div class="detail-box">
-              <h4>
-                Breakfast
-              </h4>
-              <a href="">
-                <i class="fa fa-arrow-right" aria-hidden="true"></i>
-              </a>
-            </div>
-          </div>
-        </div>
-        <div class="col-sm-6 col-md-4 mx-auto">
-          <div class="box">
-            <div class="img-box">
-              <img src="images/r2.jpg" class="box-img" alt="">
-            </div>
-            <div class="detail-box">
-              <h4>
-                Lunch
-              </h4>
-              <a href="">
-                <i class="fa fa-arrow-right" aria-hidden="true"></i>
-              </a>
-            </div>
-          </div>
-        </div>
-        <div class="col-sm-6 col-md-4 mx-auto">
-          <div class="box">
-            <div class="img-box">
-              <img src="images/r3.jpg" class="box-img" alt="">
-            </div>
-            <div class="detail-box">
-              <h4>
-                Dinner
-              </h4>
-              <a href="">
-                <i class="fa fa-arrow-right" aria-hidden="true"></i>
-              </a>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="btn-box">
-        <a href="">
-          Order Now
-        </a>
+        <h3 class="title" style="text-align: center;">{{food_pickup_info}}</h3>
+		{% if not food_list and not food_pickup_info %}
+		<h3 class="title" style="text-align: center;font-style: italic;font-size: revert;">No food available at this time.</h3>
+		{% elif food_list %}
+        <div class="container">
+          <div class="row">
+				{% for food in food_list %}
+				<div class="col-lg-4 col-md-6">
+					<div class="card h-100">
+						<div class="single-post post-style-4">
+
+							<div class="display-table">
+								<h3 class="title"><a href="#"><b>{{food.name}}</b></a></h3>
+									<p class="para">{{food.amount}} of {{food.name}}, they expire on {{food.expiration}}</p>
+							</div>
+							<ul class="post-footer">
+								<li><input type="submit" name="{{food.key}}" value="Pick Up" style="
+									border: none;
+				  color: black;
+				  padding: 10px 40px;
+				  cursor: pointer;"/></li>
+							</ul>
+						</div><!-- single-post -->
+
+					</div><!-- card -->
+				</div><!-- col-lg-4 col-md-6 -->
+				{% endfor %}
+			</div><!-- row -->
+		</div><!-- container -->
       </div>
     </div>
+    	{% endif %}
   </section>
 
   <!-- end recipe section -->
@@ -253,11 +239,10 @@
             <div class="detail-box">
               <h2>
                 <span> Get the</span> <br>
-                Delfood App
+                Food Saviour App
               </h2>
               <p>
-                long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The poin
-              </p>
+The app connects consumers with food from local restaurants, bakeries, and grocery stores to sell “surprise bags” at a third of the list price.              </p>
               <div class="app_btn_box">
                 <a href="" class="mr-1">
                   <img src="images/google_play.png" class="box-img" alt="">
@@ -282,11 +267,7 @@
 
   </section>
 
-  <!-- end app section -->
-
-  <!-- about section -->
-
-  <section class="about_section layout_padding">
+  <section class="about_section">
     <div class="container">
       <div class="col-md-11 col-lg-10 mx-auto">
         <div class="heading_container heading_center">
@@ -302,8 +283,9 @@
           </div>
           <div class="detail-box">
             <p>
-              Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable
-            </p>
+              Food Savious is a social impact firm that is leading a campaign against food waste in the United States. Our website is the largest business-to-consumer marketplace for leftover food in the world.
+Using this service, inventory tracers may make educated guesses about the food demand and replenish their inventory accordingly. The service connects individuals with companies that have excess food, allowing the food to be eaten rather than thrown away. This is a win-win-win situation for everyone involved: users enjoy wonderful meals at a fantastic price, companies get new customers and recover sunk expenses, and the environment has less wasted food to cope with.
+              </p>
             <a href="">
               <i class="fa fa-arrow-right" aria-hidden="true"></i>
             </a>
@@ -321,43 +303,52 @@
     <div class="container">
       <div class="heading_container heading_center">
         <h2>
-          Latest News
+          Why Us ?
         </h2>
       </div>
       <div class="row">
-        <div class="col-md-6">
+        <div class="col-md-4">
           <div class="box">
             <div class="img-box">
               <img src="images/n1.jpg" class="box-img" alt="">
             </div>
             <div class="detail-box">
               <h4>
-                Tasty Food For you
-              </h4>
+                 Attract new customers  </h4>
               <p>
-                there isn't anything embarrassing hidden in the middle of text. All the Lorem Ipsum generators on the Internet tend to repeat predefined
+                56.1 million customers fight food waste using the application.
               </p>
-              <a href="">
+             <!-- <a href="">
                 <i class="fa fa-arrow-right" aria-hidden="true"></i>
-              </a>
+              </a>-->
             </div>
           </div>
         </div>
-        <div class="col-md-6">
+        <div class="col-md-4">
           <div class="box">
             <div class="img-box">
               <img src="images/n2.jpg" class="box-img" alt="">
             </div>
             <div class="detail-box">
               <h4>
-                Breakfast For you
+                Turn losses into income
               </h4>
-              <p>
-                there isn't anything embarrassing hidden in the middle of text. All the Lorem Ipsum generators on the Internet tend to repeat predefined
-              </p>
-              <a href="">
-                <i class="fa fa-arrow-right" aria-hidden="true"></i>
-              </a>
+              <p>So far, businesses have sold 132 million Surprise Bags globally through Food Saviour Application.  </p>
+
+            </div>
+          </div>
+        </div>
+          <div class="col-md-4">
+          <div class="box">
+            <div class="img-box">
+              <img src="images/n2.jpg" class="box-img" alt="">
+            </div>
+            <div class="detail-box">
+              <h4>
+                Help the planet
+              </h4>
+              <p>Saving one Surprise Bag from being wasted saves 2.5kg of CO2e - the same as would be produced by charging 320 smartphones.</p>
+
             </div>
           </div>
         </div>
@@ -432,7 +423,7 @@
     <!-- info section -->
     <section class="info_section ">
       <div class="container">
-        <div class="contact_box">
+      <!--  <div class="contact_box">
           <a href="">
             <i class="fa fa-map-marker" aria-hidden="true"></i>
           </a>
@@ -442,31 +433,8 @@
           <a href="">
             <i class="fa fa-envelope" aria-hidden="true"></i>
           </a>
-        </div>
-        <div class="info_links">
-          <ul>
-            <li class="active">
-              <a href="index.html">
-                Home
-              </a>
-            </li>
-            <li>
-              <a href="about.html">
-                About
-              </a>
-            </li>
-            <li>
-              <a class="" href="blog.html">
-                Blog
-              </a>
-            </li>
-            <li>
-              <a class="" href="testimonial.html">
-                Testimonial
-              </a>
-            </li>
-          </ul>
-        </div>
+        </div>-->
+
         <div class="social_box">
           <a href="">
             <i class="fa fa-facebook" aria-hidden="true"></i>
@@ -487,9 +455,8 @@
     <footer class="footer_section">
       <div class="container">
         <p>
-          &copy; <span id="displayYear"></span> All Rights Reserved By
-          <a href="https://html.design/">Free Html Templates</a><br>
-          Distributed By: <a href="https://themewagon.com/">ThemeWagon</a>
+          &copy; <span id="displayYear"></span> All Rights Reserved By Food Saviour App
+
         </p>
       </div>
     </footer>
