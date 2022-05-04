@@ -3,16 +3,6 @@ from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from .models import Profile
 
-class EntryForm(forms.Form):
-    bought = forms.IntegerField(
-        label='Enter tomatoes bought today: '
-    )
-
-
-class StatsForm(forms.Form):
-    months = forms.IntegerField(
-        label='Predict estimated order how many months ahead?'
-    )
 class RegisterForm(UserCreationForm):
     # fields we want to include and customize in our form
     first_name = forms.CharField(max_length=100,

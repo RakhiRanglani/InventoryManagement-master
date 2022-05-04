@@ -1,98 +1,158 @@
-<!DOCTYPE HTML>
+<!DOCTYPE html>
 {% load static %}
 <html lang="en">
-<meta http-equiv="refresh" content="4; URL=http://127.0.0.1:8080/feed.html">
 <head>
-	<title>How much food to order?</title>
-	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-	<meta charset="UTF-8">
+    <title>How much food to order?</title>
+  <!-- Basic -->
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <!-- Mobile Metas -->
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <!-- Site Metas -->
+  <meta name="keywords" content="" />
+  <meta name="description" content="" />
+  <meta name="author" content="" />
+
+  <!-- bootstrap core css -->
+
+  	<link href="{% static 'css/bootstrap.css' %}" rel="stylesheet">
+
+  <!-- fonts style -->
+  <link href="https://fonts.googleapis.com/css?family=Poppins:400,600,700&display=swap" rel="stylesheet">
+
+  <!-- font awesome style -->
+  	<link href="{% static 'css/font-awesome.min.css' %}" rel="stylesheet">
+
+  <!-- nice select -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-nice-select/1.1.0/css/nice-select.min.css" integrity="sha256-mLBIhmBvigTFWPSCtvdu6a76T+3Xyt+K571hupeFLg4=" crossorigin="anonymous" />
+  <!-- slidck slider -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.min.css" integrity="sha256-UK1EiopXIL+KVhfbFa8xrmAWPeBjMVdvYMYkTAEv/HI=" crossorigin="anonymous" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick-theme.min.css.map" integrity="undefined" crossorigin="anonymous" />
 
 
-	<!-- Font -->
+  <!-- Custom styles for this template -->
 
-	<link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500" rel="stylesheet">
+  	<link href="{% static '/css/style.css' %}" rel="stylesheet">
 
+  <!-- responsive style -->
+    <link href="{% static 'css/responsive.css' %}" rel="stylesheet">
 
-	<!-- Stylesheets -->
-
-	<link href="{% static 'common-css/bootstrap.css' %}" rel="stylesheet">
-
-	<link href="{% static 'common-css/ionicons.css' %}" rel="stylesheet">
-
-
-	<link href="{% static 'layout-1/css/styles.css' %}" rel="stylesheet">
-
-	<link href="{% static 'layout-1/css/responsive.css' %}" rel="stylesheet">
 
 </head>
-<body >
+<body>
 
-	<header>
-		<div class="container-fluid position-relative no-side-padding">
+  <div class="hero_area">
+    <!-- header section strats -->
+    <header class="header_section">
+      <div class="container-fluid">
+        <nav class="navbar navbar-expand-lg custom_nav-container">
+          <a class="navbar-brand" href="index.html">
+            <span>
+              Food Saviour
+            </span>
+          </a>
+          <div class="" id="">
+            <div class="User_option">
+              <span class="display-8">Welcome, {{user.first_name.title|default:'Guest'}}</span>
+              {% if user.is_authenticated %}
+                <a class="btn btn-primary btn-lg" href="{% url 'users-profile' %}" class="nav-item nav-link">Profile</a>
 
-			<a href="#" class="logo"><img src="{% static 'images/logo.png' %}" alt="Logo Image"></a>
+                <a class="btn btn-primary btn-lg" href="{% url 'logout' %}" role="button">Logout</a>
+            {% else %}
+                <a class="btn btn-primary btn-lg" href="{% url 'login' %}" role="button">LogIn</a>
+                <a class="btn btn-primary btn-lg" href="{% url 'register' %}" role="button">Registration</a>
 
-			<div class="menu-nav-icon" data-nav-menu="#main-menu"><i class="ion-navicon"></i></div>
+            {% endif %}
+              <form class="form-inline ">
+                <input type="search" placeholder="Search" />
+                <button class="btn  nav_search-btn" type="submit">
+                  <i class="fa fa-search" aria-hidden="true"></i>
+                </button>
+              </form>
+            </div>
+            <div class="custom_menu-btn">
+              <button onclick="openNav()">
+                	<img src="{% static 'images/menu.png' %}">
 
-			<ul class="main-menu visible-on-click" id="main-menu">
-				<li><a href="index.html">Home</a></li>
-				<li><a href="stats.html">Food Stats</a></li>
-				<li><a href="upload.html">Donate Food</a></li>
-        <li><a href="feed.html">Snapshot of Weekly Inventory</a></li>
-			</ul><!-- main-menu -->
-
-		</div><!-- conatiner -->
-	</header>
-
-	<!--img src="{% static 'images/veggies.jpg' %}"-->
-  <style>
-img.two {
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
-  height: 70%;
-  width: 50%;
-}
-</style>
-  <img class="two" src="{% static 'images/apples2.jpg' %}" >
-
-	<footer>
-
-		<div class="container">
-			<div class="row">
-
-				<div class="col-lg-4 col-md-6">
-					<div class="footer-section">
-
-						<a class="logo" href="#"><img src="{% static 'images/logo.png' %}" alt="Logo Image"></a>
-						<p class="copyright">Bona @ 2019. All rights reserved.</p>
-						<p class="copyright">Designed by <a href="https://colorlib.com" target="_blank">Colorlib</a></p>
-						<ul class="icons">
-							<li><a href="#"><i class="ion-social-facebook-outline"></i></a></li>
-							<li><a href="#"><i class="ion-social-twitter-outline"></i></a></li>
-							<li><a href="#"><i class="ion-social-instagram-outline"></i></a></li>
-							<li><a href="#"><i class="ion-social-vimeo-outline"></i></a></li>
-							<li><a href="#"><i class="ion-social-pinterest-outline"></i></a></li>
-						</ul>
-
-					</div><!-- footer-section -->
-				</div><!-- col-lg-4 col-md-6 -->
-
-				<div class="col-lg-4 col-md-6">
-						<div class="footer-section">
-						<h4>By avsethur and mcli for TartanHacks 2k19</h4>
-					</div><!-- footer-section -->
-				</div><!-- col-lg-4 col-md-6 -->
-
-			</div><!-- row -->
-		</div><!-- container -->
-	</footer>
+              </button>
+            </div>
+            <div id="myNav" class="overlay">
+              <div class="overlay-content">
+                <a href="index.html">Home</a>
+                <a href="statistic.html">Food Stats</a>
+                <a href="upload.html">Donate Food</a>
+                <a href="feed.html">Snapshot of Weekly Inventory</a>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </header>
+    <!-- end header section -->
 
 
-	<!-- SCIPTS -->
 
-	<script src="{% static 'common-js/jquery-3.1.1.min.js' %}"></script>
+    <section class="slider_section ">
+      <div class="container ">
+        <div class="row">
+          <div class="col-lg-10 mx-auto">
+            <div class="detail-box">
+				 <h4 style="text-align: center;"><b>Snapshot of weekly inventory</b></h4>
+                           <img class="two" src="{% static '/images/apples2.jpg' %}">
+
+
+
+</div></div></div></div>
+    </section>
+      </div>
+
+<div class="footer_container">
+    <!-- info section -->
+    <section class="info_section ">
+      <div class="container">
+
+        <div class="social_box">
+          <a href="">
+            <i class="fa fa-facebook" aria-hidden="true"></i>
+          </a>
+          <a href="">
+            <i class="fa fa-twitter" aria-hidden="true"></i>
+          </a>
+          <a href="">
+            <i class="fa fa-linkedin" aria-hidden="true"></i>
+          </a>
+        </div>
+      </div>
+    </section>
+    <!-- end info_section -->
+
+
+    <!-- footer section -->
+    <footer class="footer_section">
+      <div class="container">
+        <p>
+          &copy; <span id="displayYear"></span> All Rights Reserved By Food Saviour App
+
+        </p>
+      </div>
+    </footer>
+    <!-- footer section -->
+
+  </div>
+
+<!-- jQery -->
+  	<script src="{% static 'js/jquery-3.4.1.min.js' %}"></script>
+
+  <!-- bootstrap js -->
+    <script src="{% static 'js/bootstrap.js' %}"></script>
+
+  <!-- slick  slider -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.js"></script>
+  <!-- nice select -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-nice-select/1.1.0/js/jquery.nice-select.min.js" integrity="sha256-Zr3vByTlMGQhvMfgkQ5BtWRSKBGa2QlspKYJnkjZTmo=" crossorigin="anonymous"></script>
+  <!-- custom js -->
+  <script src="{% static 'js/custom.js' %}"></script>
+  <script src="{% static 'common-js/jquery-3.1.1.min.js' %}"></script>
 
 	<script src="{% static 'common-js/tether.min.js' %}"></script>
 
