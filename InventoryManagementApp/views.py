@@ -1,6 +1,6 @@
 import matplotlib
-matplotlib.use("TkAgg")
 import matplotlib.pyplot as plt
+plt.switch_backend('agg')
 from django.views.decorators.csrf import csrf_exempt
 from fbprophet import Prophet
 import datetime
@@ -89,7 +89,7 @@ def save_wasted():
     plt.xlabel('Dates')
     plt.ylabel('Apples wasted')
     plt.title('Apples wasted across time')
-    plt.savefig('InventoryManagementApp/static/images/wasted.jpg')
+    plt.savefig('static/images/wasted.jpg')
 
 
 def save_ordered():
@@ -107,7 +107,7 @@ def save_ordered():
     plt.xlabel('Dates')
     plt.ylabel('Apples ordered')
     plt.title('Apples ordered across time')
-    plt.savefig('InventoryManagementApp/static/images/ordered.jpg')
+    plt.savefig('static/images/ordered.jpg')
 
 
 # the csrf cookie crashes any posting of content to server so disable
@@ -157,6 +157,7 @@ def statistic(request):
     plt.clf()
     save_ordered()
     plt.clf()
+
     # if an image is uploaded
     if (request.method == 'POST' and request.POST['order'] is not None):
         order = int(request.POST['order'])
@@ -167,10 +168,12 @@ def statistic(request):
         result = str(round(result)) + ' apples'
         inventory = 'Predicted demand for next month: ' + str(round(inventory)) + ' apples'
         waste = "Estimated predicted waste for next month (before adjustment): " + str(round(waste)) + ' apples'
+
         return render(request, 'statistic.html',
                       {'result': result, 'estimation': "Estimated optimal order of apples in next month: ",
                        'inventory': inventory, 'waste': waste})
     else:
+
         return render(request, 'statistic.html', {'result': '',
                                                   'estimation': 'Input your order of apples this month and get the estimate for next month\'s optimal order: '})
 

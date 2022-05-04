@@ -280,7 +280,7 @@ a:focus {
 .slider_section .detail-box {
   color: #ffffff;
   text-align: center;
-  padding-bottom: 99px;
+  padding-bottom: 250px;
 }
 
 .slider_section .detail-box h1 {
@@ -702,8 +702,8 @@ a:focus {
   background-size: 100% 100%;
   background-repeat: no-repeat;
   background-position: top;
-  padding-top: 245px;
-  margin-top: -175px;
+
+  margin-top: -29px;
 }
 
 .info_section {
@@ -732,14 +732,23 @@ a:focus {
 .info_section .contact_box a:hover {
   color: #ffe537;
 }
-
+img.two {
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+	height: 70%;
+	width: 50%;
+	margin-top: 5%;
+	border: 5px solid #555;
+	}
 .info_section .social_box {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
   -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
+   -ms-flex-pack: center;
+    justify-content: center;
+    background-color: #ffe537;
 }
 
 .info_section .social_box a {
